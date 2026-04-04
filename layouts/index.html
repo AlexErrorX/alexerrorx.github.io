@@ -19,7 +19,10 @@
 <!-- 全页面遮罩层（确保内容可读性） -->
 <div class="content-overlay"></div>
 
-<!-- Hero Section -->
+<!-- Curtain Container -->
+<div class="curtain-container">
+
+<!-- Hero Section (Sticky Curtain) -->
 <section class="hero" id="hero">
   <!-- 暗色蒙版层（仅Hero区） -->
   <div class="hero-overlay"></div>
@@ -37,10 +40,12 @@
   <div class="scroll-hint">↓</div>
 </section>
 
-<!-- Content Area -->
-<div class="dream-content" id="dreamContent">
+</div><!-- /curtain-container -->
 
-  <!-- Spacer -->
+<!-- Content Area (Reveals behind curtain) -->
+<div class="dream-content curtain-content" id="dreamContent">
+
+  <!-- Spacer to create scroll distance for curtain reveal -->
   <div class="scroll-spacer"></div>
 
   <!-- Categories -->

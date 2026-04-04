@@ -163,14 +163,29 @@ body {
   transition: opacity 1.5s ease-in-out;
 }
 
-/* --- Hero Section --- */
+/* --- Hero Section (Curtain Effect) --- */
 .hero {
-  position: relative;
+  position: sticky;
+  top: 0;
   height: 100vh;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   overflow: hidden;
+  z-index: 10;
+}
+
+/* Curtain reveal container */
+.curtain-container {
+  position: relative;
+  z-index: 5;
+}
+
+/* Content that reveals behind the curtain */
+.curtain-content {
+  position: relative;
+  z-index: 15;
+  margin-top: 0;
 }
 
 /* --- Hero 壁纸轮播 (Deprecated, use .page-bg-slideshow instead) --- */
@@ -379,15 +394,21 @@ body {
   50% { transform: translateX(-50%) translateY(-8px); opacity: 0.5; }
 }
 
-/* --- Content Area --- */
+/* --- Content Area (Curtain Reveal) --- */
 .dream-content {
   position: relative;
-  z-index: 20;
-  margin-top: -100px;
+  z-index: 15;
+  margin-top: 0;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
   padding: 0 1.5rem 4rem;
+  background: transparent;
+}
+
+/* Spacer to create scroll distance for curtain effect */
+.scroll-spacer {
+  height: 30vh;
 }
 
 /* --- Content Background Overlay (for readability over wallpaper) --- */
@@ -397,13 +418,44 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(2, 2, 8, 0.4);
+  background: rgba(2, 2, 8, 0.35);
   z-index: -5;
   pointer-events: none;
 }
 
 [data-theme="light"] .content-overlay {
-  background: rgba(248, 250, 252, 0.5);
+  background: rgba(248, 250, 252, 0.45);
+}
+
+/* --- Curtain Effect Enhancements --- */
+.curtain-container {
+  position: relative;
+  z-index: 10;
+}
+
+/* Smooth shadow at bottom of hero for curtain effect */
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  z-index: 5;
+  pointer-events: none;
+}
+
+[data-theme="light"] .hero::after {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.15) 100%
+  );
 }
 
 .dream-content > * {

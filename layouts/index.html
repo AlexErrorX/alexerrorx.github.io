@@ -48,9 +48,6 @@
 <!-- Content Area (Slides up like iPhone home screen) -->
 <div class="dream-content unlock-content" id="dreamContent">
 
-  <!-- Content wrapper with theme-aware background -->
-  <div class="content-wrapper">
-
   <!-- Categories -->
   <div class="categories-section">
     <div class="categories-grid">
@@ -114,8 +111,6 @@
         <a href="/about/">了解更多</a>
       </div>
     </div>
-  </div><!-- /content-wrapper -->
-
 </div><!-- /dream-content -->
 
 <!-- Hero Scripts -->
@@ -210,31 +205,20 @@
     }
   }
 
-  // ===== iPhone Unlock Parallax Effect (Performance Optimized) =====
+  // ===== iPhone Unlock Parallax Effect =====
   var pageSlideshow = document.getElementById('pageSlideshow');
-  var unlockContent = document.querySelector('.unlock-content');
-  var ticking = false;
   
-  function updateParallax() {
+  window.addEventListener('scroll', function() {
     var scrollY = window.scrollY;
     var windowHeight = window.innerHeight;
     var progress = Math.min(scrollY / windowHeight, 1);
     
     // Wallpaper scales down as you scroll (like iPhone unlock)
     if (pageSlideshow) {
-      var scale = 1.05 - (progress * 0.1);
+      var scale = 1.1 - (progress * 0.15);
       pageSlideshow.style.transform = 'scale(' + scale + ')';
     }
-    
-    ticking = false;
-  }
-  
-  window.addEventListener('scroll', function() {
-    if (!ticking) {
-      requestAnimationFrame(updateParallax);
-      ticking = true;
-    }
-  }, { passive: true });
+  });
 
   // ===== Scroll Reveal =====
   var obs = new IntersectionObserver(function(entries) {

@@ -411,18 +411,20 @@ body {
   background: transparent;
 }
 
-/* iOS-style frosted glass mask layer */
+/* iOS-style frosted glass mask layer - 半透明毛玻璃效果 */
 .content-mask {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  background: rgba(30, 40, 60, 0.45);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
   border-radius: 24px 24px 0 0;
   padding: 2rem 1.5rem 4rem;
   margin: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 [data-theme="light"] .content-mask {
-  background: rgba(248, 250, 252, 0.8);
+  background: rgba(255, 255, 255, 0.55);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 /* Remove spacer - not needed for unlock effect */
@@ -505,19 +507,19 @@ body {
   letter-spacing: 2px;
 }
 
-/* --- Categories Section --- */
+/* --- Categories Section - 半透明毛玻璃效果 --- */
 .categories-section {
   position: relative;
   padding: 3rem;
   margin-bottom: 3rem;
-  background: rgba(12, 16, 28, 0.45);
-  backdrop-filter: blur(32px) saturate(200%);
-  -webkit-backdrop-filter: blur(32px) saturate(200%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(40, 50, 70, 0.35);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--dream-radius);
   box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.3), 
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    0 8px 32px rgba(0, 0, 0, 0.2), 
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   overflow: hidden;
 }
 
@@ -536,10 +538,10 @@ body {
 }
 
 [data-theme="light"] .categories-section {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.45);
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.1), 
+    0 8px 32px rgba(0, 0, 0, 0.08), 
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
@@ -556,18 +558,18 @@ body {
   transition: all var(--dream-transition);
   position: relative;
   overflow: hidden;
-  background: rgba(15, 23, 42, 0.5);
-  backdrop-filter: blur(20px) saturate(150%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(30, 40, 60, 0.4);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--dream-radius);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 [data-theme="light"] .category-card {
-  background: rgba(255, 255, 255, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
 .category-card::before {

@@ -163,29 +163,34 @@ body {
   transition: opacity 1.5s ease-in-out;
 }
 
-/* --- Hero Section (Curtain Effect) --- */
+/* --- Hero Section (iPhone Unlock Effect) --- */
 .hero {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  width: 100%;
   height: 100vh;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   overflow: hidden;
+  z-index: 1;
+}
+
+/* iPhone unlock container */
+.unlock-container {
+  position: relative;
+  height: 200vh; /* Extra height for scroll space */
+}
+
+/* Content slides up from bottom like iPhone home screen */
+.unlock-content {
+  position: relative;
   z-index: 10;
-}
-
-/* Curtain reveal container */
-.curtain-container {
-  position: relative;
-  z-index: 5;
-}
-
-/* Content that reveals behind the curtain */
-.curtain-content {
-  position: relative;
-  z-index: 15;
-  margin-top: 0;
+  margin-top: 100vh; /* Start below hero */
+  background: var(--dream-bg);
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
 }
 
 /* --- Hero 壁纸轮播 (Deprecated, use .page-bg-slideshow instead) --- */
@@ -394,21 +399,21 @@ body {
   50% { transform: translateX(-50%) translateY(-8px); opacity: 0.5; }
 }
 
-/* --- Content Area (Curtain Reveal) --- */
+/* --- Content Area (iPhone Unlock Reveal) --- */
 .dream-content {
   position: relative;
-  z-index: 15;
+  z-index: 10;
   margin-top: 0;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  padding: 0 1.5rem 4rem;
-  background: transparent;
+  padding: 2rem 1.5rem 4rem;
+  background: var(--dream-bg);
 }
 
-/* Spacer to create scroll distance for curtain effect */
+/* Remove spacer - not needed for unlock effect */
 .scroll-spacer {
-  height: 30vh;
+  display: none;
 }
 
 /* --- Content Background Overlay (for readability over wallpaper) --- */
@@ -427,35 +432,44 @@ body {
   background: rgba(248, 250, 252, 0.45);
 }
 
-/* --- Curtain Effect Enhancements --- */
-.curtain-container {
+/* --- iPhone Unlock Effect Enhancements --- */
+.unlock-container {
   position: relative;
-  z-index: 10;
 }
 
-/* Smooth shadow at bottom of hero for curtain effect */
-.hero::after {
-  content: '';
+/* Wallpaper scales down slightly as you scroll (parallax) */
+.page-bg-slide {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100px;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(0, 0, 0, 0.3) 100%
-  );
-  z-index: 5;
-  pointer-events: none;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+  transform: scale(1.1);
+  will-change: transform;
 }
 
-[data-theme="light"] .hero::after {
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(0, 0, 0, 0.15) 100%
-  );
+.page-bg-slide.active {
+  opacity: 1;
+  transform: scale(1.05);
+  transition: opacity 2s ease-in-out;
+}
+
+/* Home indicator bar at bottom of hero */
+.home-indicator {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 134px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+  z-index: 20;
+}
+
+[data-theme="light"] .home-indicator {
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .dream-content > * {

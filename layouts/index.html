@@ -19,10 +19,10 @@
 <!-- 全页面遮罩层（确保内容可读性） -->
 <div class="content-overlay"></div>
 
-<!-- Curtain Container -->
-<div class="curtain-container">
+<!-- iPhone Unlock Container -->
+<div class="unlock-container">
 
-<!-- Hero Section (Sticky Curtain) -->
+<!-- Hero Section (Fixed like iPhone lock screen) -->
 <section class="hero" id="hero">
   <!-- 暗色蒙版层（仅Hero区） -->
   <div class="hero-overlay"></div>
@@ -37,16 +37,16 @@
       <p class="hero-author">by <span>ErrorX</span></p>
     </div>
   </div>
-  <div class="scroll-hint">↓</div>
+  <!-- iPhone Home Indicator -->
+  <div class="home-indicator"></div>
+  
+  <div class="scroll-hint">↑ 上滑解锁</div>
 </section>
 
-</div><!-- /curtain-container -->
+</div><!-- /unlock-container -->
 
-<!-- Content Area (Reveals behind curtain) -->
-<div class="dream-content curtain-content" id="dreamContent">
-
-  <!-- Spacer to create scroll distance for curtain reveal -->
-  <div class="scroll-spacer"></div>
+<!-- Content Area (Slides up like iPhone home screen) -->
+<div class="dream-content unlock-content" id="dreamContent">
 
   <!-- Categories -->
   <div class="categories-section">
@@ -206,6 +206,30 @@
       sb.appendChild(s);
     }
   }
+
+  // ===== iPhone Unlock Parallax Effect =====
+  var pageSlideshow = document.getElementById('pageSlideshow');
+  var unlockContent = document.querySelector('.unlock-content');
+  
+  window.addEventListener('scroll', function() {
+    var scrollY = window.scrollY;
+    var windowHeight = window.innerHeight;
+    var progress = Math.min(scrollY / windowHeight, 1);
+    
+    // Wallpaper scales down as you scroll (like iPhone unlock)
+    if (pageSlideshow) {
+      var scale = 1.1 - (progress * 0.15); // 1.1 -> 0.95
+      var opacity = 1 - (progress * 0.3); // 1 -> 0.7
+      pageSlideshow.style.transform = 'scale(' + scale + ')';
+      pageSlideshow.style.opacity = opacity;
+    }
+    
+    // Content slides up with slight delay
+    if (unlockContent) {
+      var translateY = Math.max(0, 100 - (progress * 100)); // 100px -> 0px
+      unlockContent.style.transform = 'translateY(' + translateY + 'px)';
+    }
+  });
 
   // ===== Scroll Reveal =====
   var obs = new IntersectionObserver(function(entries) {

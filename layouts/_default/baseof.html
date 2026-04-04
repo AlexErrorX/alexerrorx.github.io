@@ -14,6 +14,8 @@
 
 <head>
     {{- partial "head.html" . }}
+    <!-- Google Fonts: Noto Serif SC + ZCOOL XiaoWei -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
 </head>
 
 {{- if (or (ne .Kind `page` ) (eq .Layout `archives`) (eq .Layout `search`)) }}
@@ -21,16 +23,19 @@
 {{- else }}
 <body id="top">
 {{- end }}
+
+    <!-- Aurora Background (全站) -->
+    <div class="aurora">
+        <div class="aurora-blob"></div>
+        <div class="aurora-blob"></div>
+        <div class="aurora-blob"></div>
+    </div>
+
     {{ partialCached "header.html" . .Page -}}
     <main class="main">
         {{- block "main" . }}{{ end }}
     </main>
     {{ partialCached "footer.html" . .Layout .Kind (.Param "hideFooter") (.Param "ShowCodeCopyButtons") -}}
-
-    <!-- Stars Background -->
-    {{- if eq .Kind "page" }}
-    <script defer src="{{ "js/stars.js" | absURL }}"></script>
-    {{- end }}
 
     <!-- APlayer Music Player -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
@@ -84,14 +89,12 @@
             }
         }
 
-        // Show toggle button when aplayer loads
         window.addEventListener('load', function() {
             setTimeout(function() {
                 var btn = document.getElementById('music-toggle');
                 var aplayer = document.querySelector('.aplayer');
                 if (btn && aplayer) {
                     btn.style.display = 'flex';
-                    // Start with mini mode (body hidden)
                     var body = aplayer.querySelector('.aplayer-body');
                     if (body) body.style.display = 'none';
                 }

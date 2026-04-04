@@ -48,6 +48,9 @@
 <!-- Content Area (Slides up like iPhone home screen) -->
 <div class="dream-content unlock-content" id="dreamContent">
 
+  <!-- Content wrapper with theme-aware background -->
+  <div class="content-wrapper">
+
   <!-- Categories -->
   <div class="categories-section">
     <div class="categories-grid">
@@ -111,9 +114,9 @@
         <a href="/about/">了解更多</a>
       </div>
     </div>
-  </div>
+  </div><!-- /content-wrapper -->
 
-</div>
+</div><!-- /dream-content -->
 
 <!-- Hero Scripts -->
 <script>
@@ -207,29 +210,31 @@
     }
   }
 
-  // ===== iPhone Unlock Parallax Effect =====
+  // ===== iPhone Unlock Parallax Effect (Performance Optimized) =====
   var pageSlideshow = document.getElementById('pageSlideshow');
   var unlockContent = document.querySelector('.unlock-content');
+  var ticking = false;
   
-  window.addEventListener('scroll', function() {
+  function updateParallax() {
     var scrollY = window.scrollY;
     var windowHeight = window.innerHeight;
     var progress = Math.min(scrollY / windowHeight, 1);
     
     // Wallpaper scales down as you scroll (like iPhone unlock)
     if (pageSlideshow) {
-      var scale = 1.1 - (progress * 0.15); // 1.1 -> 0.95
-      var opacity = 1 - (progress * 0.3); // 1 -> 0.7
+      var scale = 1.05 - (progress * 0.1);
       pageSlideshow.style.transform = 'scale(' + scale + ')';
-      pageSlideshow.style.opacity = opacity;
     }
     
-    // Content slides up with slight delay
-    if (unlockContent) {
-      var translateY = Math.max(0, 100 - (progress * 100)); // 100px -> 0px
-      unlockContent.style.transform = 'translateY(' + translateY + 'px)';
+    ticking = false;
+  }
+  
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(updateParallax);
+      ticking = true;
     }
-  });
+  }, { passive: true });
 
   // ===== Scroll Reveal =====
   var obs = new IntersectionObserver(function(entries) {

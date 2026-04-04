@@ -17,6 +17,7 @@ params:
   ShowShareButtons: false
   ShowToc: true
   TocOpen: false
+  walineServerURL: "https://waline-neon-theta.vercel.app"
   comments: true
 
   homeInfoParams:

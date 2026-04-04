@@ -1,13 +1,29 @@
 ---
 title: "留言墙"
-date: 2026-04-03
+date: 2026-04-04
 draft: false
 ---
 
-## 📝 留言墙
+## 💬 欢迎留言
 
-欢迎在这里留下你的足迹！可以是对文章的看法、对生活的感悟，或者只是一句简单的问候。
+这里是留言墙，你可以在这里：
+- 留下你的想法和建议
+- 提出问题或讨论
+- 随便聊聊
 
-> 请友善发言，尊重每一位来访者。
+---
 
-<!-- Waline 评论组件将由模板自动加载 -->
+<div id="waline-comment"></div>
+
+<script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+  init({
+    el: '#waline-comment',
+    serverURL: 'https://xcarus-waline.vercel.app',
+    dark: 'auto',
+    lang: 'zh-CN',
+    placeholder: '欢迎留下你的想法...',
+    pageview: true,
+    comment: true,
+  });
+</script>

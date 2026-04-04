@@ -1,8 +1,8 @@
 ---
 title: "归档"
-date: 2026-04-03
+layout: "archives"
+summary: "文章归档"
 draft: false
-layout: archives
-url: "/archives/"
-summary: archives
 ---
+
+按时间顺序浏览所有文章：

@@ -1,7 +1,8 @@
 ---
 title: "搜索"
-date: 2026-04-03
+layout: "search"
+summary: "搜索文章"
 draft: false
-layout: search
-placeholder: "搜索文章..."
 ---
+
+在下方输入关键词搜索博客文章：

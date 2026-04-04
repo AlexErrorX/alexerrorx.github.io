@@ -2,14 +2,33 @@
 
 <!-- Hero Section -->
 <section class="hero" id="hero">
-  <div class="hero-bg-fallback"></div>
+  <!-- 壁纸轮播层（自动扫描 static/hero-wallpapers/ 目录下所有图片，无需手动配置） -->
+  <div class="hero-bg-slideshow" id="heroSlideshow">
+    {{- $wallpaperDir := "hero-wallpapers" -}}
+    {{- $imgExts := slice "jpg" "jpeg" "png" "webp" -}}
+    {{- $wallpapers := slice -}}
+    {{- range readDir (printf "static/%s" $wallpaperDir) -}}
+      {{- $ext := lower .Name | path.Ext | strings.TrimPrefix "." -}}
+      {{- if in $imgExts $ext -}}
+        {{- $wallpapers = $wallpapers | append .Name -}}
+      {{- end -}}
+    {{- end -}}
+    {{- range $i, $name := $wallpapers -}}
+      <div class="hero-slide{{ if eq $i 0 }} active{{ end }}" style="background-image: url('/{{ $wallpaperDir }}/{{ $name | urlquery }}')"></div>
+    {{- end -}}
+  </div>
+  <!-- 暗色蒙版层 -->
   <div class="hero-overlay"></div>
+  <!-- 星空层 -->
   <div class="stars" id="heroStars"></div>
+  <!-- 文字内容层 - 居中偏下 -->
   <div class="hero-content">
-    <p class="hero-quote">
-      <span id="typingText"></span><span class="hero-typing-cursor"></span>
-    </p>
-    <p class="hero-author">by <span>ErrorX</span></p>
+    <div class="hero-text-mask">
+      <p class="hero-quote">
+        <span id="typingText"></span><span class="hero-typing-cursor"></span>
+      </p>
+      <p class="hero-author">by <span>ErrorX</span></p>
+    </div>
   </div>
   <div class="scroll-hint">↓</div>
 </section>
@@ -17,18 +36,17 @@
 <!-- Content Area -->
 <div class="dream-content" id="dreamContent">
 
-  <!-- Spacer: 推动内容到滚动后可见 -->
+  <!-- Spacer -->
   <div class="scroll-spacer"></div>
 
   <!-- Categories -->
-  <div class="glass" style="padding: 3rem; margin-bottom: 3rem;">
-    <h2 class="section-title">专栏导航</h2>
+  <div class="categories-section">
     <div class="categories-grid">
       {{- $taxonomy := "categories" -}}
       {{- with site.GetPage $taxonomy -}}
         {{- range .Pages -}}
           {{- $count := len .Pages -}}
-          <div class="category-card glass">
+          <div class="category-card">
             <a href="{{ .Permalink }}">
               <span class="category-icon">{{ .Title }}</span>
               <h3 class="category-name">{{ .Title }}</h3>
@@ -91,8 +109,32 @@
 <!-- Hero Scripts -->
 <script>
 (function() {
+
+  // =====================================================
+  // ★★★ 壁纸轮播（图片由 Hugo 模板自动从
+  //      static/hero-wallpapers/ 目录扫描生成，
+  //      直接增删图片即可，无需改代码）★★★
+  // =====================================================
+  var slideshowInterval = 1200000; // 每张壁纸切换间隔（毫秒）≈ 20分钟
+
+  var slideshow = document.getElementById('heroSlideshow');
+  var heroSlides = slideshow ? slideshow.querySelectorAll('.hero-slide') : [];
+  if (slideshow && heroSlides.length > 1) {
+    var currentSlide = 0;
+    function nextSlide() {
+      heroSlides[currentSlide].classList.remove('active');
+      heroSlides[currentSlide].classList.add('fade-out');
+      currentSlide = (currentSlide + 1) % heroSlides.length;
+      heroSlides[currentSlide].classList.add('active');
+      setTimeout(function() {
+        heroSlides[(currentSlide - 1 + heroSlides.length) % heroSlides.length].classList.remove('fade-out');
+      }, 1500);
+    }
+    setInterval(nextSlide, slideshowInterval);
+  }
+
   // ===== 打字效果 - 三体名言 =====
-  const mottos = [
+  var mottos = [
     '给岁月以文明，而不是给文明以岁月。',
     '弱小和无知不是生存的障碍，傲慢才是。',
     '失去人性，失去很多；失去兽性，失去一切。',
@@ -104,11 +146,11 @@
     '在宇宙中，你再快都有比你快的，你再慢也有比你慢的。'
   ];
 
-  let mi = 0, ci = 0, deleting = false;
-  const te = document.getElementById('typingText');
+  var mi = 0, ci = 0, deleting = false;
+  var te = document.getElementById('typingText');
   if (te) {
     function type() {
-      const c = mottos[mi];
+      var c = mottos[mi];
       if (!deleting) {
         te.textContent = c.substring(0, ci + 1);
         ci++;
@@ -132,25 +174,26 @@
     type();
   }
 
-  // ===== Stars =====
-  const sb = document.getElementById('heroStars');
+  // ===== 星空（轻量版，仅少量静态闪烁星） =====
+  var sb = document.getElementById('heroStars');
   if (sb) {
-    for (let i = 0; i < 250; i++) {
-      const s = document.createElement('div');
-      s.className = 'star';
+    var starCount = 60;
+    for (var i = 0; i < starCount; i++) {
+      var s = document.createElement('div');
+      var size = Math.random() * 1.5 + 0.5;
+      s.className = 'star star-mid';
+      s.style.width = s.style.height = size + 'px';
+      s.style.opacity = Math.random() * 0.4 + 0.1;
       s.style.left = Math.random() * 100 + '%';
       s.style.top = Math.random() * 100 + '%';
-      s.style.setProperty('--d', (Math.random() * 4 + 2) + 's');
-      s.style.animationDelay = Math.random() * 4 + 's';
-      const size = Math.random() * 2 + 0.5;
-      s.style.width = s.style.height = size + 'px';
-      s.style.opacity = Math.random() * 0.6;
+      s.style.setProperty('--d', (Math.random() * 5 + 3) + 's');
+      s.style.animationDelay = Math.random() * 5 + 's';
       sb.appendChild(s);
     }
   }
 
   // ===== Scroll Reveal =====
-  const obs = new IntersectionObserver(function(entries) {
+  var obs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
       if (e.isIntersecting) e.target.classList.add('visible');
     });

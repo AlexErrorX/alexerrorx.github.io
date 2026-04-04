@@ -1,0 +1,25 @@
+<!-- Waline Comment System -->
+{{- if .Site.Params.comments | default false }}
+<div id="waline-comment" class="waline-container"></div>
+<script type="module">
+  import { init } from 'https://unpkg.com/waline@3/dist/waline.js';
+
+  init({
+    el: '#waline-comment',
+    serverURL: '{{ .Site.Params.waline.serverURL | default "https://your-waline.vercel.app" }}',
+    lang: 'zh-CN',
+    dark: 'html[data-theme="dark"]',
+    meta: ['nick', 'mail'],
+    requiredMeta: [],
+    login: 'disable',
+    wordLimit: [0, 2000],
+    pageSize: 10,
+    copyright: false,
+    reaction: true,
+    emoji: [
+      'https://unpkg.com/@waline/emojis@1.2.0/weibo',
+      'https://unpkg.com/@waline/emojis@1.2.0/bilibili',
+    ],
+  });
+</script>
+{{- end }}

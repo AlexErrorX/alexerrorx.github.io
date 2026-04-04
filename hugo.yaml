@@ -1,0 +1,98 @@
+baseURL: https://alexerrorx.github.io/
+languageCode: zh-cn
+defaultContentLanguage: zh
+title: Xcarus茶思屋
+theme: PaperMod
+
+params:
+  env: production
+  description: "星穹梦境 · 个人博客"
+  author: ErrorX
+  defaultTheme: dark
+  ShowReadingTime: true
+  ShowWordCount: true
+  ShowBreadCrumbs: true
+  ShowPostNavLinks: true
+  ShowCodeCopyButtons: true
+  ShowShareButtons: false
+  ShowToc: true
+  TocOpen: false
+  comments: true
+
+  homeInfoParams:
+    Title: ""
+    Content: ""
+
+  socialIcons:
+    - name: github
+      url: "https://github.com/AlexErrorX"
+
+  assets:
+    disableHLJS: true
+    favicon: "/favicon.ico"
+    favicon16x16: "/favicon-16x16.ico"
+    favicon32x32: "/favicon-32x32.ico"
+
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.4
+    minMatchCharLength: 0
+    keys: ["title", "permalink", "summary", "content"]
+
+  cover:
+    hidden: false
+    hiddenInList: false
+    hiddenInSingle: false
+
+  editPost:
+    URL: ""
+    Text: ""
+    appendFilePath: true
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+menu:
+  main:
+    - identifier: home
+      name: 首页
+      url: /
+      weight: 1
+    - identifier: categories
+      name: 专栏
+      url: /categories/
+      weight: 2
+    - identifier: tags
+      name: 标签
+      url: /tags/
+      weight: 3
+    - identifier: archives
+      name: 归档
+      url: /archives/
+      weight: 4
+    - identifier: message
+      name: 留言墙
+      url: /message/
+      weight: 5
+    - identifier: about
+      name: 关于我
+      url: /about/
+      weight: 6
+    - identifier: search
+      name: 搜索
+      url: /search/
+      weight: 7
+
+markup:
+  highlight:
+    style: dracula
+    lineNos: true
+  goldmark:
+    renderer:
+      unsafe: true

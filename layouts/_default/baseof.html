@@ -1,0 +1,103 @@
+{{- if lt hugo.Version "0.146.0" }}
+{{- errorf "=> hugo v0.146.0 or greater is required for hugo-PaperMod to build " }}
+{{- end -}}
+
+<!DOCTYPE html>
+{{- $theme := site.Params.defaultTheme | default "auto" }}
+{{- if eq $theme "dark" }}
+<html lang="{{ site.Language }}" dir="{{ .Language.LanguageDirection | default "auto" }}" data-theme="dark">
+{{- else if eq $theme "light" }}
+<html lang="{{ site.Language }}" dir="{{ .Language.LanguageDirection | default "auto" }}" data-theme="light">
+{{- else }}
+<html lang="{{ site.Language }}" dir="{{ .Language.LanguageDirection | default "auto" }}" data-theme="auto">
+{{- end }}
+
+<head>
+    {{- partial "head.html" . }}
+</head>
+
+{{- if (or (ne .Kind `page` ) (eq .Layout `archives`) (eq .Layout `search`)) }}
+<body class="list" id="top">
+{{- else }}
+<body id="top">
+{{- end }}
+    {{ partialCached "header.html" . .Page -}}
+    <main class="main">
+        {{- block "main" . }}{{ end }}
+    </main>
+    {{ partialCached "footer.html" . .Layout .Kind (.Param "hideFooter") (.Param "ShowCodeCopyButtons") -}}
+
+    <!-- Stars Background -->
+    {{- if eq .Kind "page" }}
+    <script defer src="{{ "js/stars.js" | absURL }}"></script>
+    {{- end }}
+
+    <!-- APlayer Music Player -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script>
+    <meting-js
+        id="xcarus-playlist"
+        server="netease"
+        type="playlist"
+        id="2094532724"
+        fixed="true"
+        mini="true"
+        autoplay="false"
+        volume="0.5"
+        mutex="true"
+        loop="all"
+        list-folded="true"
+        storage-name="xcarus-player"
+        theme="#165DFF">
+    </meting-js>
+
+    <!-- Music Player Toggle Button -->
+    <button id="music-toggle" onclick="toggleMusic()" style="
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #165DFF, #7B61FF);
+        border: none;
+        color: #F1F5F9;
+        font-size: 18px;
+        cursor: pointer;
+        z-index: 9999;
+        box-shadow: 0 4px 15px rgba(22, 93, 255, 0.4);
+        display: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        align-items: center;
+        justify-content: center;
+    " title="音乐播放器">🎵</button>
+
+    <script>
+        function toggleMusic() {
+            var aplayer = document.querySelector('.aplayer');
+            if (aplayer) {
+                var body = aplayer.querySelector('.aplayer-body');
+                if (body) {
+                    body.style.display = body.style.display === 'none' ? '' : 'none';
+                }
+            }
+        }
+
+        // Show toggle button when aplayer loads
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                var btn = document.getElementById('music-toggle');
+                var aplayer = document.querySelector('.aplayer');
+                if (btn && aplayer) {
+                    btn.style.display = 'flex';
+                    // Start with mini mode (body hidden)
+                    var body = aplayer.querySelector('.aplayer-body');
+                    if (body) body.style.display = 'none';
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,23 +1,27 @@
 {{- define "main" -}}
 
+<!-- 全页面壁纸轮播层 -->
+<div class="page-bg-slideshow" id="pageSlideshow">
+  {{- $wallpaperDir := "hero-wallpapers" -}}
+  {{- $imgExts := slice "jpg" "jpeg" "png" "webp" -}}
+  {{- $wallpapers := slice -}}
+  {{- range readDir (printf "static/%s" $wallpaperDir) -}}
+    {{- $ext := lower .Name | path.Ext | strings.TrimPrefix "." -}}
+    {{- if in $imgExts $ext -}}
+      {{- $wallpapers = $wallpapers | append .Name -}}
+    {{- end -}}
+  {{- end -}}
+  {{- range $i, $name := $wallpapers -}}
+    <div class="page-bg-slide{{ if eq $i 0 }} active{{ end }}" style="background-image: url('/{{ $wallpaperDir }}/{{ $name | urlquery }}')"></div>
+  {{- end -}}
+</div>
+
+<!-- 全页面遮罩层（确保内容可读性） -->
+<div class="content-overlay"></div>
+
 <!-- Hero Section -->
 <section class="hero" id="hero">
-  <!-- 壁纸轮播层（自动扫描 static/hero-wallpapers/ 目录下所有图片，无需手动配置） -->
-  <div class="hero-bg-slideshow" id="heroSlideshow">
-    {{- $wallpaperDir := "hero-wallpapers" -}}
-    {{- $imgExts := slice "jpg" "jpeg" "png" "webp" -}}
-    {{- $wallpapers := slice -}}
-    {{- range readDir (printf "static/%s" $wallpaperDir) -}}
-      {{- $ext := lower .Name | path.Ext | strings.TrimPrefix "." -}}
-      {{- if in $imgExts $ext -}}
-        {{- $wallpapers = $wallpapers | append .Name -}}
-      {{- end -}}
-    {{- end -}}
-    {{- range $i, $name := $wallpapers -}}
-      <div class="hero-slide{{ if eq $i 0 }} active{{ end }}" style="background-image: url('/{{ $wallpaperDir }}/{{ $name | urlquery }}')"></div>
-    {{- end -}}
-  </div>
-  <!-- 暗色蒙版层 -->
+  <!-- 暗色蒙版层（仅Hero区） -->
   <div class="hero-overlay"></div>
   <!-- 星空层 -->
   <div class="stars" id="heroStars"></div>
@@ -111,26 +115,32 @@
 (function() {
 
   // =====================================================
-  // ★★★ 壁纸轮播（图片由 Hugo 模板自动从
+  // ★★★ 全页面壁纸轮播（图片由 Hugo 模板自动从
   //      static/hero-wallpapers/ 目录扫描生成，
   //      直接增删图片即可，无需改代码）★★★
   // =====================================================
   var slideshowInterval = 1200000; // 每张壁纸切换间隔（毫秒）≈ 20分钟
 
-  var slideshow = document.getElementById('heroSlideshow');
-  var heroSlides = slideshow ? slideshow.querySelectorAll('.hero-slide') : [];
-  if (slideshow && heroSlides.length > 1) {
+  var pageSlideshow = document.getElementById('pageSlideshow');
+  var pageSlides = pageSlideshow ? pageSlideshow.querySelectorAll('.page-bg-slide') : [];
+  if (pageSlideshow && pageSlides.length > 1) {
     var currentSlide = 0;
     function nextSlide() {
-      heroSlides[currentSlide].classList.remove('active');
-      heroSlides[currentSlide].classList.add('fade-out');
-      currentSlide = (currentSlide + 1) % heroSlides.length;
-      heroSlides[currentSlide].classList.add('active');
+      pageSlides[currentSlide].classList.remove('active');
+      pageSlides[currentSlide].classList.add('fade-out');
+      currentSlide = (currentSlide + 1) % pageSlides.length;
+      pageSlides[currentSlide].classList.add('active');
       setTimeout(function() {
-        heroSlides[(currentSlide - 1 + heroSlides.length) % heroSlides.length].classList.remove('fade-out');
+        pageSlides[(currentSlide - 1 + pageSlides.length) % pageSlides.length].classList.remove('fade-out');
       }, 1500);
     }
     setInterval(nextSlide, slideshowInterval);
+  }
+
+  // 兼容旧的 heroSlideshow（如果存在）
+  var heroSlideshow = document.getElementById('heroSlideshow');
+  if (heroSlideshow) {
+    heroSlideshow.style.display = 'none';
   }
 
   // ===== 打字效果 - 三体名言 =====

@@ -530,6 +530,10 @@ body {
   gap: 1.5rem;
 }
 
+.category-card-link {
+  display: block;
+}
+
 .category-card {
   padding: 2rem;
   cursor: pointer;
@@ -557,13 +561,13 @@ body {
   transition: opacity var(--dream-transition);
 }
 
-.category-card:hover {
+.category-card-link:hover .category-card {
   transform: translateY(-8px);
   border-color: rgba(22, 93, 255, 0.3);
   box-shadow: 0 12px 40px rgba(22, 93, 255, 0.15);
 }
 
-.category-card:hover::before {
+.category-card-link:hover .category-card::before {
   opacity: 1;
 }
 
@@ -603,16 +607,20 @@ body {
 }
 
 /* --- Post Cards --- */
+.post-card-link {
+  display: block;
+  margin-bottom: 1.5rem;
+}
+
 .post-card {
   padding: 2rem;
-  margin-bottom: 1.5rem;
   transition: all var(--dream-transition);
   display: flex;
   gap: 1.5rem;
   align-items: center;
 }
 
-.post-card:hover {
+.post-card-link:hover .post-card {
   transform: translateX(8px);
   border-color: rgba(0, 212, 255, 0.2);
 }

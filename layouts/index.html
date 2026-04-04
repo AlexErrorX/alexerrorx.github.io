@@ -58,14 +58,14 @@
       {{- with site.GetPage $taxonomy -}}
         {{- range .Pages -}}
           {{- $count := len .Pages -}}
-          <div class="category-card">
-            <a href="{{ .Permalink }}">
+          <a href="{{ .Permalink }}" class="category-card-link" style="text-decoration:none;">
+            <div class="category-card">
               <span class="category-icon">{{ .Title }}</span>
               <h3 class="category-name">{{ .Title }}</h3>
               <p class="category-desc">{{ .Description | default "" }}</p>
               <span class="category-count">{{ $count }} 篇文章</span>
-            </a>
-          </div>
+            </div>
+          </a>
         {{- end -}}
       {{- end -}}
     </div>
@@ -78,25 +78,27 @@
     {{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true" -}}
     {{- $posts := first 6 $pages -}}
     {{- range $posts -}}
-      <div class="post-card glass">
-        <a href="{{ .Permalink }}" style="display:flex;gap:1.5rem;align-items:center;width:100%;text-decoration:none;color:inherit;">
-          {{- $cat := "" -}}
-          {{- with .Params.categories -}}
-            {{- $cat = index . 0 -}}
-          {{- end -}}
-          {{- $catPage := site.GetPage (printf "/categories/%s" $cat) -}}
-          <div class="post-thumb">{{ with $catPage }}{{ .Title }}{{ else }}📝{{ end }}</div>
-          <div class="post-info">
-            <h3 class="post-title">{{ .Title }}</h3>
-            <p class="post-meta">
-              {{ with $cat }}{{ . }} · {{ end }}
-              {{ .Date | time.Format "2006-01-02" }}
-              {{ if .ReadingTime }} · {{ .ReadingTime }} 分钟阅读{{ end }}
-            </p>
-            <p class="post-excerpt">{{ .Summary | plainify | htmlUnescape }}</p>
+      <a href="{{ .Permalink }}" class="post-card-link" style="text-decoration:none;display:block;">
+        <div class="post-card glass">
+          <div style="display:flex;gap:1.5rem;align-items:center;width:100%;">
+            {{- $cat := "" -}}
+            {{- with .Params.categories -}}
+              {{- $cat = index . 0 -}}
+            {{- end -}}
+            {{- $catPage := site.GetPage (printf "/categories/%s" $cat) -}}
+            <div class="post-thumb">{{ with $catPage }}{{ .Title }}{{ else }}📝{{ end }}</div>
+            <div class="post-info">
+              <h3 class="post-title">{{ .Title }}</h3>
+              <p class="post-meta">
+                {{ with $cat }}{{ . }} · {{ end }}
+                {{ .Date | time.Format "2006-01-02" }}
+                {{ if .ReadingTime }} · {{ .ReadingTime }} 分钟阅读{{ end }}
+              </p>
+              <p class="post-excerpt">{{ .Summary | plainify | htmlUnescape }}</p>
+            </div>
           </div>
-        </a>
-      </div>
+        </div>
+      </a>
     {{- end -}}
   </div>
 

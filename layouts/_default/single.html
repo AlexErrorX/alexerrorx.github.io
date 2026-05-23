@@ -63,10 +63,11 @@
   import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
   init({
     el: '#waline-comment',
-    serverURL: 'https://xcarus-waline.vercel.app',
+    serverURL: '{{ .Site.Params.walineServerURL }}',
     dark: 'auto',
     lang: 'zh-CN',
-    placeholder: '欢迎留下你的想法...',
+    login: 'disable',
+    placeholder: '昵称',
     pageview: true,
     comment: true,
   });

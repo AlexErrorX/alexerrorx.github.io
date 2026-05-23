@@ -1,0 +1,37 @@
+{{- define "main" -}}
+
+<div class="page-bg-slideshow" id="pageSlideshow">
+  {{- $wallpaperDir := "hero-wallpapers" -}}
+  {{- $imgExts := slice "jpg" "jpeg" "png" "webp" -}}
+  {{- $wallpapers := slice -}}
+  {{- range readDir (printf "static/%s" $wallpaperDir) -}}
+    {{- $ext := lower .Name | path.Ext | strings.TrimPrefix "." -}}
+    {{- if in $imgExts $ext -}}
+      {{- $wallpapers = $wallpapers | append .Name -}}
+    {{- end -}}
+  {{- end -}}
+  {{- range $i, $name := $wallpapers -}}
+    <div class="page-bg-slide{{ if eq $i 0 }} active{{ end }}" style="background-image: url('/{{ $wallpaperDir }}/{{ $name | urlquery }}')"></div>
+  {{- end -}}
+</div>
+
+<div class="content-overlay"></div>
+
+<div class="subpage-content" style="display:flex;align-items:center;justify-content:center;min-height:70vh;">
+  <div class="glass" style="text-align:center;padding:4rem 3rem;max-width:600px;width:100%;">
+    <div style="font-size:8rem;font-weight:700;background:linear-gradient(135deg, #165DFF, #7B61FF, #00D4FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:1rem;">404</div>
+    <h2 style="font-size:1.5rem;color:#F1F5F9;margin-bottom:1rem;">页面漂流到了未知星域</h2>
+    <p style="color:rgba(241,245,249,0.6);margin-bottom:2rem;line-height:1.8;">
+      你寻找的页面可能已被星辰吞噬，<br>或者从未存在过。
+    </p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <a href="/" style="display:inline-block;padding:0.75rem 2rem;background:linear-gradient(135deg, #165DFF, #7B61FF);color:#F1F5F9;border-radius:12px;text-decoration:none;font-weight:600;transition:transform 0.2s,box-shadow 0.2s;">返回首页</a>
+      <a href="/search/" style="display:inline-block;padding:0.75rem 2rem;background:rgba(241,245,249,0.1);color:#F1F5F9;border-radius:12px;text-decoration:none;font-weight:600;border:1px solid rgba(241,245,249,0.15);transition:transform 0.2s,box-shadow 0.2s;">搜索文章</a>
+    </div>
+    <p style="margin-top:2.5rem;color:rgba(241,245,249,0.3);font-size:0.85rem;">
+      「在宇宙中，你再快都有比你快的，你再慢也有比你慢的。」<br>—— 《三体》
+    </p>
+  </div>
+</div>
+
+{{- end -}}

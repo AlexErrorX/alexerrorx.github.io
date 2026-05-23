@@ -1,0 +1,15 @@
+{
+  "name": "xcarus-blog",
+  "version": "1.0.0",
+  "description": "Xcarus茶思屋 - ErrorX 的个人博客",
+  "private": true,
+  "scripts": {
+    "dev": "hugo server -D --disableFastRender",
+    "build": "hugo --minify",
+    "build:preview": "hugo --minify --baseURL http://localhost:1313/",
+    "clean": "rm -rf public/ resources/"
+  },
+  "keywords": ["blog", "hugo", "papermod", "xcarus"],
+  "author": "ErrorX",
+  "license": "MIT"
+}

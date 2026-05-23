@@ -1,5 +1,12 @@
 // Stars background generator for 星穹梦境 theme
+// Only activates on pages without wallpaper slideshow (about, message, etc.)
+// Pages with wallpaper already have visual richness from the slideshow + aurora
 (function() {
+  // Skip if page already has wallpaper slideshow or Hero section
+  if (document.getElementById('pageSlideshow') || document.getElementById('hero')) {
+    return;
+  }
+
   const canvas = document.createElement('canvas');
   canvas.className = 'stars-bg';
   canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;pointer-events:none;';

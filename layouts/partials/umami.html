@@ -1,0 +1,4 @@
+{{- if and .Site.Params.umamiWebsiteId .Site.Params.umamiScriptUrl }}
+<!-- Umami Analytics -->
+<script async src="{{ .Site.Params.umamiScriptUrl }}" data-website-id="{{ .Site.Params.umamiWebsiteId }}"></script>
+{{- end }}

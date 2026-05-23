@@ -6,7 +6,17 @@ theme: PaperMod
 
 params:
   env: production
-  description: "星穹梦境 · 个人博客"
+  description: "Xcarus茶思屋 - ErrorX 的个人博客，记录物理、编程、科幻、高考备考的思考与成长。给岁月以文明，而不是给文明以岁月。"
+  keywords:
+    - 个人博客
+    - 物理
+    - 编程
+    - 科幻
+    - 高考备考
+    - 学习笔记
+    - 技术博客
+    - ErrorX
+    - Xcarus茶思屋
   author: ErrorX
   defaultTheme: dark
   ShowReadingTime: true
@@ -17,8 +27,12 @@ params:
   ShowShareButtons: false
   ShowToc: true
   TocOpen: false
-  walineServerURL: "https://waline-neon-theta.vercel.app"
+  walineServerURL: "https://xcarus-waline.vercel.app"
   comments: true
+
+  # Umami Analytics（注册 https://umami.is 后填写）
+  # umamiWebsiteId: "你的 Website ID"
+  # umamiScriptUrl: "https://analytics.umami.is/script.js"
 
   homeInfoParams:
     Title: ""

@@ -22,7 +22,8 @@ draft: false
     serverURL: 'https://xcarus-waline.vercel.app',
     dark: 'auto',
     lang: 'zh-CN',
-    placeholder: '欢迎留下你的想法...',
+    login: 'disable',
+    placeholder: '昵称',
     pageview: true,
     comment: true,
   });

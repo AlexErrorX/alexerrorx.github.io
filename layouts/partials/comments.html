@@ -6,7 +6,7 @@
 
   init({
     el: '#waline-comment',
-    serverURL: '{{ .Site.Params.waline.serverURL | default "https://your-waline.vercel.app" }}',
+    serverURL: '{{ .Site.Params.walineServerURL | default "https://your-waline.vercel.app" }}',
     lang: 'zh-CN',
     dark: 'html[data-theme="dark"]',
     meta: ['nick', 'mail'],

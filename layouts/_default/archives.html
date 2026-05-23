@@ -37,7 +37,7 @@
     {{- range .Pages -}}
     <article style="padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <a href="{{ .Permalink }}" style="color: #F1F5F9; text-decoration: none; font-size: 1.1rem;">
+        <a href="{{ .RelPermalink }}" style="color: #F1F5F9; text-decoration: none; font-size: 1.1rem;">
           {{ .Title }}
         </a>
         <span style="color: rgba(241,245,249,0.4); font-size: 0.85rem; white-space: nowrap;">

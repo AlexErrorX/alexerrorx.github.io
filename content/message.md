@@ -13,18 +13,4 @@ draft: false
 
 ---
 
-<div id="waline-comment"></div>
-
-<script type="module">
-  import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
-  init({
-    el: '#waline-comment',
-    serverURL: 'https://xcarus-waline.vercel.app',
-    dark: 'auto',
-    lang: 'zh-CN',
-    login: 'disable',
-    placeholder: '昵称',
-    pageview: true,
-    comment: true,
-  });
-</script>
+{{< giscus >}}

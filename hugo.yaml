@@ -30,6 +30,12 @@ params:
   walineServerURL: "https://xcarus-waline.vercel.app"
   comments: true
 
+  # Giscus 评论系统（去 https://giscus.app/zh-CN 输入仓库名获取）
+  # giscusRepo: "AlexErrorX/alexerrorx.github.io"
+  # giscusRepoId: ""
+  # giscusCategory: "Announcements"
+  # giscusCategoryId: ""
+
   # Umami Analytics（注册 https://umami.is 后填写）
   # umamiWebsiteId: "你的 Website ID"
   # umamiScriptUrl: "https://analytics.umami.is/script.js"

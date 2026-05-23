@@ -58,7 +58,7 @@
       {{- with site.GetPage $taxonomy -}}
         {{- range .Pages -}}
           {{- $count := len .Pages -}}
-          <a href="{{ .Permalink }}" class="category-card-link" style="text-decoration:none;">
+          <a href="{{ .RelPermalink }}" class="category-card-link" style="text-decoration:none;">
             <div class="category-card">
               <span class="category-icon">{{ .Title }}</span>
               <h3 class="category-name">{{ .Title }}</h3>
@@ -78,7 +78,7 @@
     {{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true" -}}
     {{- $posts := first 6 $pages -}}
     {{- range $posts -}}
-      <a href="{{ .Permalink }}" class="post-card-link" style="text-decoration:none;display:block;">
+      <a href="{{ .RelPermalink }}" class="post-card-link" style="text-decoration:none;display:block;">
         <div class="post-card glass">
           <div style="display:flex;gap:1.5rem;align-items:center;width:100%;">
             {{- $cat := "" -}}

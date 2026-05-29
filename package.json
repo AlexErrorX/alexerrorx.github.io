@@ -4,10 +4,12 @@
   "description": "Xcarus茶思屋 - ErrorX 的个人博客",
   "private": true,
   "scripts": {
-    "dev": "hugo server -D --disableFastRender",
+    "dev": "taskkill /F /IM hugo.exe 2>nul & hugo server -D -p 1313 --disableFastRender",
     "build": "hugo --minify",
     "build:preview": "hugo --minify --baseURL http://localhost:1313/",
-    "clean": "rm -rf public/ resources/"
+    "clean": "rm -rf public/ resources/",
+    "publish": "python publish.py",
+    "deploy": "git add . && git commit -m \"发布新文章\" && git push origin main"
   },
   "keywords": ["blog", "hugo", "papermod", "xcarus"],
   "author": "ErrorX",

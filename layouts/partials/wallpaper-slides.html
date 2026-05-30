@@ -1,0 +1,25 @@
+{{- /* wallpaper-slides.html - 智能壁纸选择：WebP优先 */}}
+{{- $wallpaperDir := "hero-wallpapers" -}}
+{{- $allFiles := readDir (printf "static/%s" $wallpaperDir) -}}
+
+{{- /* 分别收集 WebP 和非 WebP */}}
+{{- $webpFiles := slice -}}
+{{- $otherFiles := slice -}}
+{{- range $allFiles -}}
+  {{- $ext := lower .Name | path.Ext | strings.TrimPrefix "." -}}
+  {{- if eq $ext "webp" -}}
+    {{- $webpFiles = $webpFiles | append .Name -}}
+  {{- else if in (slice "jpg" "jpeg" "png") $ext -}}
+    {{- $otherFiles = $otherFiles | append .Name -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* WebP优先 */}}
+{{- $wallpapers := $webpFiles -}}
+{{- if eq (len $webpFiles) 0 -}}
+  {{- $wallpapers = $otherFiles -}}
+{{- end -}}
+
+{{- range $i, $name := $wallpapers -}}
+<div class="page-bg-slide{{ if eq $i 0 }} active{{ end }}" style="background-image: url('/{{ $wallpaperDir }}/{{ $name | urlquery }}')"></div>
+{{- end -}}

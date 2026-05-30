@@ -17,12 +17,20 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=ZCOOL+XiaoWei&display=swap" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=ZCOOL+XiaoWei&display=swap"></noscript>
 
-    {{- /* Preload hero wallpapers for instant display */}}
+    {{- /* Preload hero wallpapers — WebP first for speed */}}
     {{- $wallpaperDir := "hero-wallpapers" }}
-    {{- $imgExts := slice "jpg" "jpeg" "png" "webp" }}
+    {{- $preloadFiles := slice }}
+    {{- $webpFound := false }}
+    {{- range readDir (printf "static/%s" $wallpaperDir) -}}
+      {{- if eq (lower .Name | path.Ext) ".webp" }}{{ $webpFound = true }}{{ end }}
+    {{- end }}
     {{- range readDir (printf "static/%s" $wallpaperDir) -}}
       {{- $ext := lower .Name | path.Ext | strings.TrimPrefix "." }}
-      {{- if in $imgExts $ext }}
+      {{- if $webpFound }}
+        {{- if eq $ext "webp" }}
+    <link rel="preload" as="image" href="/{{ $wallpaperDir }}/{{ .Name | urlquery }}" fetchpriority="high">
+        {{- end }}
+      {{- else if in (slice "jpg" "jpeg" "png") $ext }}
     <link rel="preload" as="image" href="/{{ $wallpaperDir }}/{{ .Name | urlquery }}" fetchpriority="high">
       {{- end }}
     {{- end }}

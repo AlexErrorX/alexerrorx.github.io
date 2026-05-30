@@ -2,18 +2,7 @@
 
 <!-- 全页面壁纸轮播层 -->
 <div class="page-bg-slideshow" id="pageSlideshow">
-  {{- $wallpaperDir := "hero-wallpapers" -}}
-  {{- $imgExts := slice "jpg" "jpeg" "png" "webp" -}}
-  {{- $wallpapers := slice -}}
-  {{- range readDir (printf "static/%s" $wallpaperDir) -}}
-    {{- $ext := lower .Name | path.Ext | strings.TrimPrefix "." -}}
-    {{- if in $imgExts $ext -}}
-      {{- $wallpapers = $wallpapers | append .Name -}}
-    {{- end -}}
-  {{- end -}}
-  {{- range $i, $name := $wallpapers -}}
-    <div class="page-bg-slide{{ if eq $i 0 }} active{{ end }}" style="background-image: url('/{{ $wallpaperDir }}/{{ $name | urlquery }}')"></div>
-  {{- end -}}
+  {{- partial "wallpaper-slides.html" . -}}
 </div>
 
 <!-- 全页面遮罩层（确保内容可读性） -->

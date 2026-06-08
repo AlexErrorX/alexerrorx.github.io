@@ -30,11 +30,10 @@ params:
   walineServerURL: "https://xcarus-waline.vercel.app"
   comments: true
 
-  # Giscus 评论系统（去 https://giscus.app/zh-CN 输入仓库名获取）
-  # giscusRepo: "AlexErrorX/alexerrorx.github.io"
-  # giscusRepoId: ""
-  # giscusCategory: "Announcements"
-  # giscusCategoryId: ""
+  giscusRepo: "AlexErrorX/alexerrorx.github.io"
+  giscusRepoId: "R_kgDOKKCGxg"
+  giscusCategory: "Announcements"
+  giscusCategoryId: "DIC_kwDOKKCGxs4C9q8_"
 
   # Umami Analytics（注册 https://umami.is 后填写）
   # umamiWebsiteId: "你的 Website ID"
@@ -117,3 +116,14 @@ markup:
   goldmark:
     renderer:
       unsafe: true
+    extensions:
+      passthrough:
+        enable: true
+        delimiters:
+          block:
+            - - '$$'
+              - '$$'
+          inline:
+            - - '$'
+              - '$'
+              - '$'

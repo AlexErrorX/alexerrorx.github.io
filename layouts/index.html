@@ -69,22 +69,13 @@
     {{- range $posts -}}
       <a href="{{ .RelPermalink }}" class="post-card-link" style="text-decoration:none;display:block;">
         <div class="post-card glass">
-          <div style="display:flex;gap:1.5rem;align-items:center;width:100%;">
-            {{- $cat := "" -}}
-            {{- with .Params.categories -}}
-              {{- $cat = index . 0 -}}
-            {{- end -}}
-            {{- $catPage := site.GetPage (printf "/categories/%s" $cat) -}}
-            <div class="post-thumb">{{ with $catPage }}{{ .Title }}{{ else }}📝{{ end }}</div>
-            <div class="post-info">
-              <h3 class="post-title">{{ .Title }}</h3>
-              <p class="post-meta">
-                {{ with $cat }}{{ . }} · {{ end }}
-                {{ .Date | time.Format "2006-01-02" }}
-                {{ if .ReadingTime }} · {{ .ReadingTime }} 分钟阅读{{ end }}
-              </p>
-              <p class="post-excerpt">{{ .Summary | plainify | htmlUnescape }}</p>
-            </div>
+          <div class="post-info" style="width:100%;">
+            <h3 class="post-title">{{ .Title }}</h3>
+            <p class="post-meta">
+              {{ .Date | time.Format "2006-01-02" }}
+              {{ if .ReadingTime }} · {{ .ReadingTime }} 分钟阅读{{ end }}
+            </p>
+            <p class="post-excerpt">{{ .Summary | plainify | htmlUnescape }}</p>
           </div>
         </div>
       </a>
@@ -200,20 +191,26 @@
     }
   }
 
-  // ===== iPhone Unlock Parallax Effect =====
+  // ===== iPhone Unlock Parallax Effect (throttled) =====
   var pageSlideshow = document.getElementById('pageSlideshow');
+  var ticking = false;
   
   window.addEventListener('scroll', function() {
-    var scrollY = window.scrollY;
-    var windowHeight = window.innerHeight;
-    var progress = Math.min(scrollY / windowHeight, 1);
-    
-    // Wallpaper scales down as you scroll (like iPhone unlock)
-    if (pageSlideshow) {
-      var scale = 1.1 - (progress * 0.15);
-      pageSlideshow.style.transform = 'scale(' + scale + ')';
+    if (!ticking) {
+      requestAnimationFrame(function() {
+        var scrollY = window.scrollY;
+        var windowHeight = window.innerHeight;
+        var progress = Math.min(scrollY / windowHeight, 1);
+        
+        if (pageSlideshow) {
+          var scale = 1.1 - (progress * 0.15);
+          pageSlideshow.style.transform = 'scale(' + scale + ')';
+        }
+        ticking = false;
+      });
+      ticking = true;
     }
-  });
+  }, { passive: true });
 
   // ===== Scroll Reveal =====
   var obs = new IntersectionObserver(function(entries) {
@@ -223,16 +220,23 @@
   }, { threshold: 0.08 });
   document.querySelectorAll('.dream-content > *').forEach(function(el) { obs.observe(el); });
 
-  // ===== Nav scroll effect =====
+  // ===== Nav scroll effect (throttled) =====
   var nav = document.querySelector('.nav');
+  var navTicking = false;
   if (nav) {
     window.addEventListener('scroll', function() {
-      if (window.scrollY > 80) {
-        nav.classList.add('scrolled');
-      } else {
-        nav.classList.remove('scrolled');
+      if (!navTicking) {
+        requestAnimationFrame(function() {
+          if (window.scrollY > 80) {
+            nav.classList.add('scrolled');
+          } else {
+            nav.classList.remove('scrolled');
+          }
+          navTicking = false;
+        });
+        navTicking = true;
       }
-    });
+    }, { passive: true });
   }
 })();
 </script>

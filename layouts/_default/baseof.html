@@ -17,21 +17,24 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=ZCOOL+XiaoWei&display=swap" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=ZCOOL+XiaoWei&display=swap"></noscript>
 
-    {{- /* Preload hero wallpapers — WebP first for speed */}}
+    {{- /* Preload only first 2 hero wallpapers (save bandwidth) */}}
     {{- $wallpaperDir := "hero-wallpapers" }}
     {{- $preloadFiles := slice }}
     {{- $webpFound := false }}
     {{- range readDir (printf "static/%s" $wallpaperDir) -}}
       {{- if eq (lower .Name | path.Ext) ".webp" }}{{ $webpFound = true }}{{ end }}
     {{- end }}
+    {{- $count := 0 }}
     {{- range readDir (printf "static/%s" $wallpaperDir) -}}
       {{- $ext := lower .Name | path.Ext | strings.TrimPrefix "." }}
       {{- if $webpFound }}
-        {{- if eq $ext "webp" }}
+        {{- if and (eq $ext "webp") (lt $count 2) }}
     <link rel="preload" as="image" href="/{{ $wallpaperDir }}/{{ .Name | urlquery }}" fetchpriority="high">
+          {{- $count = add $count 1 }}
         {{- end }}
-      {{- else if in (slice "jpg" "jpeg" "png") $ext }}
+      {{- else if and (in (slice "jpg" "jpeg" "png") $ext) (lt $count 2) }}
     <link rel="preload" as="image" href="/{{ $wallpaperDir }}/{{ .Name | urlquery }}" fetchpriority="high">
+      {{- $count = add $count 1 }}
       {{- end }}
     {{- end }}
 </head>

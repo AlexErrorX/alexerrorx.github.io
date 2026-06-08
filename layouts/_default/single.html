@@ -1,48 +1,180 @@
 {{- define "main" -}}
 
+<!-- Reading Progress Bar -->
+<div class="reading-progress" id="readingProgress"></div>
+
 <!-- Page Background -->
 <div class="page-bg-slideshow" id="pageSlideshow">
   {{- partial "wallpaper-slides.html" . -}}
 </div>
 
-<!-- Content Area -->
-<div class="subpage-content">
-  <article class="post-single">
-    <header class="post-header">
-      <h1 class="post-title">{{ .Title }}</h1>
-      <div class="post-meta">
-        {{ .Date | time.Format "2006年01月02日" }}
-        {{ if .ReadingTime }} · {{ .ReadingTime }} 分钟阅读{{ end }}
-        {{ with .Params.categories }} · {{ range . }}<a href="/categories/{{ . | urlize }}/">{{ . }}</a>{{ end }}{{ end }}
+<!-- Full-width Layout: Fixed TOC Sidebar + Resizer + Article -->
+<div class="post-layout" id="postLayout">
+  {{- if and .TableOfContents (ne .Params.toc false) -}}
+  <!-- Fixed TOC Sidebar -->
+  <aside class="toc-sidebar" id="tocSidebar">
+    <div class="toc-sidebar-inner">
+      <div class="toc-sidebar-title" id="tocTitleBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+        <span>目录</span>
+        <span class="toc-collapse-icon">−</span>
       </div>
-    </header>
-    
-    <div class="post-content">
-      {{ .Content }}
+      <div class="toc-sidebar-body">
+        {{ .TableOfContents }}
+      </div>
+      <div class="toc-sidebar-footer">
+        <div class="toc-footer-dot"></div>
+      </div>
     </div>
-    
-    {{ with .Params.tags }}
-    <div class="post-tags" style="margin-top: 2rem;">
-      {{ range . }}
-      <a href="/tags/{{ . | urlize }}/" class="post-tag">{{ . }}</a>
+  </aside>
+  <!-- Resizer Handle -->
+  <div class="toc-resizer" id="tocResizer" title="拖拽调整宽度"></div>
+  {{- end -}}
+
+  <!-- Scrollable Article Area -->
+  <div class="post-article-wrapper">
+    <article class="post-single">
+      <header class="post-header">
+        <h1 class="post-title">{{ .Title }}</h1>
+        <div class="post-meta">
+          {{ .Date | time.Format "2006年01月02日" }}
+          {{ if .ReadingTime }} · {{ .ReadingTime }} 分钟阅读{{ end }}
+          {{ with .Params.categories }} · {{ range . }}<a href="/categories/{{ . | urlize }}/">{{ . }}</a>{{ end }}{{ end }}
+          · <span id="busuanzi_container_page_pv">👁 <span id="busuanzi_value_page_pv"></span> 次阅读</span>
+        </div>
+      </header>
+
+      <div class="post-content">
+        {{ .Content }}
+      </div>
+
+      {{ with .Params.tags }}
+      <div class="post-tags" style="margin-top: 2rem;">
+        {{ range . }}
+        <a href="/tags/{{ . | urlize }}/" class="post-tag">{{ . }}</a>
+        {{ end }}
+      </div>
       {{ end }}
-    </div>
-    {{ end }}
-    
-    <!-- Giscus Comments -->
-    {{- partial "giscus.html" . -}}
-  </article>
-  
-  <!-- Post Navigation -->
-  <nav class="post-nav-links" style="margin-top: 2rem;">
-    {{- with .PrevInSection -}}
-    <a href="{{ .RelPermalink }}" style="float: left;">← {{ .Title }}</a>
+
+      <!-- Giscus Comments -->
+      {{- partial "giscus.html" . -}}
+    </article>
+
+    <!-- Related Posts -->
+    {{- $currentTags := .Params.tags -}}
+    {{- if $currentTags -}}
+    {{- $related := first 3 (where (where site.RegularPages "Params.tags" "intersect" $currentTags) "RelPermalink" "!=" .RelPermalink) -}}
+    {{- if $related -}}
+    <section class="related-posts">
+      <h2 class="section-title">相关文章</h2>
+      <div class="related-grid">
+        {{- range $related -}}
+        <a href="{{ .RelPermalink }}" class="related-card" style="text-decoration:none;">
+          <h4>{{ .Title }}</h4>
+          <div class="related-meta">{{ .Date | time.Format "2006-01-02" }}{{ if .ReadingTime }} · {{ .ReadingTime }}分钟{{ end }}</div>
+        </a>
+        {{- end -}}
+      </div>
+    </section>
     {{- end -}}
-    {{- with .NextInSection -}}
-    <a href="{{ .RelPermalink }}" style="float: right;">{{ .Title }} →</a>
     {{- end -}}
-    <div style="clear: both;"></div>
-  </nav>
+
+    <!-- Post Navigation -->
+    <nav class="post-nav-links">
+      {{- with .PrevInSection -}}
+      <a href="{{ .RelPermalink }}" style="float: left;">← {{ .Title }}</a>
+      {{- end -}}
+      {{- with .NextInSection -}}
+      <a href="{{ .RelPermalink }}" style="float: right;">{{ .Title }} →</a>
+      {{- end -}}
+      <div style="clear: both;"></div>
+    </nav>
+  </div>
 </div>
+
+{{- if and .TableOfContents (ne .Params.toc false) -}}
+<!-- Resizer + Collapse + Scroll Spy -->
+<script>
+(function(){
+  var tocSidebar = document.getElementById('tocSidebar');
+  var resizer = document.getElementById('tocResizer');
+  var layout = document.getElementById('postLayout');
+  var titleBtn = document.getElementById('tocTitleBtn');
+  var isTocCollapsed = false;
+  var MIN_WIDTH = 180;
+  var MAX_WIDTH = 500;
+
+  // ---- Collapse toggle ----
+  if (titleBtn) {
+    titleBtn.addEventListener('click', function() {
+      isTocCollapsed = !isTocCollapsed;
+      tocSidebar.classList.toggle('collapsed', isTocCollapsed);
+      var icon = titleBtn.querySelector('.toc-collapse-icon');
+      if (icon) icon.textContent = isTocCollapsed ? '+' : '−';
+    });
+  }
+
+  // ---- Resizer drag ----
+  if (resizer) {
+    var startX, startWidth;
+    resizer.addEventListener('mousedown', function(e) {
+      e.preventDefault();
+      startX = e.clientX;
+      startWidth = tocSidebar.offsetWidth;
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+      
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    });
+
+    function onMouseMove(e) {
+      var dx = e.clientX - startX;
+      var newWidth = Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, startWidth + dx));
+      layout.style.setProperty('--toc-width', newWidth + 'px');
+    }
+
+    function onMouseUp() {
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    }
+  }
+
+  // ---- Scroll spy ----
+  var tocLinks = document.querySelectorAll('.toc-sidebar-body nav a');
+  var headings = document.querySelectorAll('.post-content h1[id], .post-content h2[id], .post-content h3[id], .post-content h4[id]');
+  if (tocLinks.length && headings.length) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(function(a) { a.classList.remove('active'); });
+          var active = document.querySelector('.toc-sidebar-body nav a[href="#' + entry.target.id + '"]');
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-80px 0px -70% 0px' });
+    headings.forEach(function(h) { observer.observe(h); });
+  }
+})();
+</script>
+{{- end -}}
+
+<!-- Reading Progress Bar JS -->
+<script>
+(function(){
+  var bar = document.getElementById('readingProgress');
+  if (!bar) return;
+  window.addEventListener('scroll', function() {
+    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    bar.style.width = progress + '%';
+  }, { passive: true });
+})();
+</script>
 
 {{- end -}}

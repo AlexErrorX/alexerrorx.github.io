@@ -3,7 +3,7 @@ title: "高考物理电磁学核心梳理"
 date: 2026-05-29T12:00:00+08:00
 draft: false
 categories:
-  - 高考备考与学习
+  - 高考备考
 tags:
   - 电磁学
   - 高考物理

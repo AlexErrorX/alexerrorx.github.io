@@ -1,0 +1,35 @@
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" 
+        integrity="sha384-Rr/GGDnvOjwMHbL/FUcDQkYF9VEi+FGX9R3whLZ3Qs8kZRTOqwCgQrtlF7c1Nhp" 
+        crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" 
+        integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" 
+        crossorigin="anonymous"></script>
+<script defer>
+// This defer script runs AFTER both KaTeX scripts (defer preserves order)
+if (typeof renderMathInElement !== 'undefined') {
+    // 1. Render fenced math code blocks (```math / ```katex)
+    document.querySelectorAll('pre > code[class*="language-math"], pre > code[class*="language-katex"]').forEach(function(block) {
+        var pre = block.parentElement;
+        var text = block.textContent.trim();
+        var div = document.createElement('div');
+        div.className = 'katex-block-container';
+        div.style.cssText = 'overflow-x:auto;padding:16px 0;';
+        pre.parentNode.replaceChild(div, pre);
+        try { katex.render(text, div, { displayMode: true, throwOnError: false }); }
+        catch(e) { div.textContent = text; }
+    });
+    // 2. Auto-render inline/display math everywhere
+    renderMathInElement(document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false},
+            {left: "\\(", right: "\\)", display: false},
+            {left: "\\[", right: "\\]", display: true}
+        ],
+        ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code", "option"],
+        throwOnError: false
+    });
+}
+</script>
+<!-- Busuanzi page view counter -->
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>

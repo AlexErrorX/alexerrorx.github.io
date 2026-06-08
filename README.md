@@ -143,7 +143,7 @@ git push origin main
 | Category · 分类 | Description |
 |:--|:--|
 | 🔬 Physics & Science · 物理与科学 | Physics, astronomy, scientific thinking |
-| 📚 Exam Prep & Learning · 高考备考与学习 | Study strategies, math, Gaokao prep |
+| 📚 Exam Prep & Learning · 高考备考 | Study strategies, math, Gaokao prep |
 | 🤖 AI & Thinking · AI与思想 | Artificial intelligence, deep reflection |
 | 💻 Tech & Software · 电脑与软件 | Programming, tools, hardware |
 | 📖 Reading & Reflection · 阅读与思考 | Book notes, abstract thinking |

@@ -10,7 +10,7 @@
 
 <!-- Full-width Layout: Fixed TOC Sidebar + Resizer + Article -->
 <div class="post-layout" id="postLayout">
-  {{- if and .TableOfContents (ne .Params.toc false) -}}
+  {{- if ne .Params.toc false -}}
   <!-- Fixed TOC Sidebar -->
   <aside class="toc-sidebar" id="tocSidebar">
     <div class="toc-sidebar-inner">
@@ -22,7 +22,11 @@
         <span class="toc-collapse-icon">−</span>
       </div>
       <div class="toc-sidebar-body">
+        {{- if .TableOfContents -}}
         {{ .TableOfContents }}
+        {{- else -}}
+        <p style="color:var(--dtm);font-size:.8rem;text-align:center;padding:1rem 0;">暂无目录</p>
+        {{- end -}}
       </div>
       <div class="toc-sidebar-footer">
         <div class="toc-footer-dot"></div>
@@ -94,7 +98,7 @@
   </div>
 </div>
 
-{{- if and .TableOfContents (ne .Params.toc false) -}}
+{{- if ne .Params.toc false -}}
 <!-- Resizer + Collapse + Scroll Spy -->
 <script>
 (function(){
